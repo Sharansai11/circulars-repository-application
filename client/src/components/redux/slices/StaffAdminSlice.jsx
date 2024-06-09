@@ -6,27 +6,39 @@ export const StaffAdminLoginThunk = createAsyncThunk(
     "staff-admin-login",
     async (userCredObj, thunkApi) => {
         try {
-            let res;
-            console.log("first get ", userCredObj);
             if (userCredObj.userType === "staff") {
-                res = await axios.post("http://localhost:4000/staff-api/login", userCredObj);
-            } else if (userCredObj.userType === "admin") {
-                res = await axios.post("http://localhost:4000/admin-api/login", userCredObj);
-            }
-            console.log(res);
-            if (res.data.message === "login success") {
-                // Store token in local storage
+              const res = await axios.post(
+                "http://localhost:4000/staff-api/login",
+                userCredObj
+              );
+              if (res.data.message === "Login success") {
+                //store token in local/session storage
                 localStorage.setItem("token", res.data.token);
-                // Return user data
-                return res.data;
-            } else {
+        
+                //return data
+              } else {
                 return thunkApi.rejectWithValue(res.data.message);
+              }
+              return res.data;
             }
-        } catch (err) {
-            return thunkApi.rejectWithValue(err.response?.data?.message || err.message);
-        }
-    }
-);
+            if (userCredObj.userType === "admin") {
+              const res = await axios.post(
+                "http://localhost:4000/admin-api/login",
+                userCredObj
+              );
+              if (res.data.message === "login success") {
+                //store token in local/session storage
+                localStorage.setItem("token", res.data.token);
+              } else {
+                return thunkApi.rejectWithValue(res.data.message);
+              }
+              return res.data;
+            }
+          } catch (err) {
+            return thunkApi.rejectWithValue(err);
+          }
+        });
+  
 
 export const staffAdminSlice = createSlice({
     name: "staff-admin-login",
@@ -48,23 +60,26 @@ export const staffAdminSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(StaffAdminLoginThunk.pending, (state) => {
-                state.isPending = true;
-            })
-            .addCase(StaffAdminLoginThunk.fulfilled, (state, action) => {
-                state.isPending = false;
-                state.currentUser = action.payload.user; // Ensure 'user' exists in response
-                state.loginUserStatus = true;
-                state.errMsg = "";
-                state.errorOccurred = false;
-            })
-            .addCase(StaffAdminLoginThunk.rejected, (state, action) => {
-                state.isPending = false;
-                state.currentUser = {};
-                state.loginUserStatus = false;
-                state.errMsg = action.payload || "An error occurred";
-                state.errorOccurred = true;
-            });
+        .addCase(StaffAdminLoginThunk.pending, (state) => {
+          state.isPending = true;
+        })
+        .addCase(StaffAdminLoginThunk.fulfilled, (state, action) => {
+          state.isPending = false;
+          state.currentUser = action.payload.user; // Ensure 'user' exists in response
+          state.loginUserStatus = true;
+          state.errMsg = "";
+          state.errorOccurred = false;
+          console.log("Login successful", state.currentUser);
+        })
+        .addCase(StaffAdminLoginThunk.rejected, (state, action) => {
+          state.isPending = false;
+          state.currentUser = {};
+          state.loginUserStatus = false;
+          state.errMsg = action.payload || "An error occurred";
+          state.errorOccurred = true;
+          console.log("Login failed", state.errMsg);
+        });
+      
     },
 });
 
