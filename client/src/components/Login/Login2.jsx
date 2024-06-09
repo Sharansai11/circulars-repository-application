@@ -7,16 +7,15 @@ import './Login2.css'; // Import the CSS file
 import Header from '../Header/Header';
 
 function Login2() {
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
   const {
     register,
     handleSubmit,
   } = useForm();
 
-  const { currentUser, loginUserStatus } =
-    useSelector((state) => state.StaffAdminLoginReducer);
+  const { currentUser, loginUserStatus } =useSelector((state) => state.StaffAdminLoginReducer);
 
-  const dispatch = useDispatch();
-  const navigate = useNavigate();
 
   function onLoginFormSubmit(userCred) {
     console.log("from login",userCred);
