@@ -10,64 +10,14 @@ const VerifyToken = require("../Middlewares/VerifyToken");
 let admincollection;
 let staffcollection;
 
-// let articlescollection;
+// let staffcollection;
 //get usercollection app
 adminApp.use((req, res, next) => {
     admincollection = req.app.get('admincollection');
     staffcollection = req.app.get("staffcollection");
-    // articlescollection = req.app.get('articlescollection')
+    // staffcollection = req.app.get('staffcollection')
     next()
 })
-
-
-
-//user registration route
-adminApp.post(
-    "/user",
-    expressAsyncHandler(async (req, res) => {
-        //get user resource from client
-        const newUser = req.body;
-        //check for duplicate user based on username
-        const dbuser = await staffcollection.findOne({ username: newUser.username });
-        //if user found in db
-        if (dbuser !== null) {
-            res.send({ message: "User existed" });
-        } else {
-            //hash the password
-            const hashedPassword = await bcryptjs.hash(newUser.password, 6);
-            //replace plain pw with hashed pw
-            newUser.password = hashedPassword;
-            //create user
-            await staffcollection.insertOne(newUser);
-            //send res
-            res.send({ message: "User created" });
-        }
-    })
-);
-
-adminApp.post(
-    "/admin",
-    expressAsyncHandler(async (req, res) => {
-        //get user resource from client
-        const newUser = req.body;
-        //check for duplicate user based on username
-        const dbuser = await admincollection.findOne({ username: newUser.username });
-        //if user found in db
-        if (dbuser !== null) {
-            res.send({ message: "User existed" });
-        } else {
-            //hash the password
-            const hashedPassword = await bcryptjs.hash(newUser.password, 6);
-            //replace plain pw with hashed pw
-            newUser.password = hashedPassword;
-            //create user
-            await admincollection.insertOne(newUser);
-            //send res
-            res.send({ message: "User created" });
-        }
-    })
-);
-
 
 //author login
 adminApp.post('/login', expressAsyncHandler(async (req, res) => {
@@ -92,10 +42,72 @@ adminApp.post('/login', expressAsyncHandler(async (req, res) => {
 }))
 
 
+//user registration route
+adminApp.post(
+    "/staff", VerifyToken,
+    expressAsyncHandler(async (req, res) => {
+        //get user resource from client
+        const newUser = req.body;
+        //check for duplicate user based on username
+        const dbuser = await staffcollection.findOne({ username: newUser.username });
+        //if user found in db
+        if (dbuser !== null) {
+            res.send({ message: "User existed" });
+        } else {
+            //hash the password
+            const hashedPassword = await bcryptjs.hash(newUser.password, 6);
+            //replace plain pw with hashed pw
+            newUser.password = hashedPassword;
+            //create user
+            await staffcollection.insertOne(newUser);
+            //send res
+            res.send({ message: "User created" });
+        }
+    })
+);
+
+adminApp.post(
+    "/admin", VerifyToken,
+    expressAsyncHandler(async (req, res) => {
+        //get user resource from client
+        const newUser = req.body;
+        //check for duplicate user based on username
+        const dbuser = await admincollection.findOne({ username: newUser.username });
+        //if user found in db
+        if (dbuser !== null) {
+            res.send({ message: "User existed" });
+        } else {
+            //hash the password
+            const hashedPassword = await bcryptjs.hash(newUser.password, 6);
+            //replace plain pw with hashed pw
+            newUser.password = hashedPassword;
+            //create user
+            await admincollection.insertOne(newUser);
+            //send res
+            res.send({ message: "User created" });
+        }
+    })
+);
 
 
 
 
+
+
+
+
+adminApp.put('/delete-user', VerifyToken, expressAsyncHandler(async (req, res) => {
+ 
+   
+    //get user
+    const userToDelete = req.body;
+
+    if (userToDelete.status === true) {
+        let modifiedArt = await staffcollection.UpdateOne({ userId: userToDelete.userId }, { $set: { ...userToDelete, status: false } })
+        res.send({ message: "user deleted" })
+    }
+
+}))
 
 
 

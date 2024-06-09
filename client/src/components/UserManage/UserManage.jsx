@@ -1,22 +1,22 @@
-import React ,{useState}from 'react';
-import './UserManage.css'
-import AddUser from '../AddUser/AddUser';
-import DeleteUser from '../DeleteUser/DeleteUser';
+// import React ,{useState}from 'react';
+// import './UserManage.css'
+// import AddUser from '../AddUser/AddUser';
+// import DeleteUser from '../DeleteUser/DeleteUser';
 
 
-const UserManage = (tShowAdd) => {
-    const[showAdd,setShowAdd]=useState(false)
-    const[showDelete,setShowDelete]=useState(false)
+// const UserManage = (tShowAdd) => {
+//     const[showAdd,setShowAdd]=useState(false)
+//     const[showDelete,setShowDelete]=useState(false)
 
-    setShowAdd()
+//     setShowAdd()
     
-    return (
-        <>
+//     return (
+//         <>
        
-        <div>
-        </div>        
-        </>
-    );
-};
+//         <div>
+//         </div>        
+//         </>
+//     );
+// };
 
-export default UserManage;
+// export default UserManage;

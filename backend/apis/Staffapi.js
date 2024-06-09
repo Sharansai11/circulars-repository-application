@@ -8,6 +8,15 @@ const jwt = require("jsonwebtoken");
 const VerifyToken = require("../Middlewares/VerifyToken");
 require("dotenv").config();
 
+let staffcollection;
+
+// let articlescollection;
+//get usercollection app
+staffApp.use((req, res, next) => {
+    staffcollection = req.app.get("staffcollection");
+    // articlescollection = req.app.get('articlescollection')
+    next()
+})
 //user login
 staffApp.post(
     "/login",

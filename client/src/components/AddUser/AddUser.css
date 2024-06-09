@@ -1,0 +1,74 @@
+/* AddUser.css */
+.container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    height: 100%;
+    background-color: #ffffff;
+}
+
+.heading {
+    font-size: 2rem;
+    margin-bottom: 20px;
+}
+
+.form {
+    background: #ffffff;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: rgba(17, 17, 26, 0.1) 0px 0px 16px;
+    width: 100%;
+    max-width: 400px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.input {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 16px;
+}
+
+.radio-container {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-bottom: 15px;
+}
+
+.admin-radio,
+.staff-radio {
+    display: flex;
+    align-items: center;
+}
+
+.admin-radio p,
+.staff-radio p {
+    margin: 0;
+    margin-right: 10px;
+}
+
+.login-button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #7d2ae8;
+    color: #fff;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    width: 100%;
+}
+
+.login-button:hover {
+    background-color: #5d1abf;
+}
+
+.login-button:active {
+    transform: scale(0.96);
+}

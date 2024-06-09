@@ -1,23 +1,63 @@
-.header{
+/* Header.css */
+.header {
     position: fixed;
-    left: 0px;
-    top: 0px;
+    left: 0;
+    top: 0;
     z-index: 10;
-    margin: 0px;
-    padding: 5px;
     width: 100%;
     display: flex;
-    justify-content: center;
+    align-items: center;
+    justify-content: space-between;
+    padding: 5px 20px;
     background-image: url('https://img.freepik.com/free-photo/dark-blue-paint-minimal-background_53876-102518.jpg');
     background-size: cover; 
     background-position: center;
+    color: white;
 }
-.vnr-logo{
-    padding-top: 15px;
-    padding-right: 15px;
+
+.middle-content {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex: 1;
+    text-align: center;
+}
+
+.vnr-logo {
     width: 50px;
     height: 50px;
+    margin-right: 15px;
 }
-.vnr{
-    color: white;
+
+.vnr {
+    font-size: 1.5rem;
+    font-weight: bold;
+}
+
+.header-rightmost-content {
+    display: flex;
+    align-items: center;
+}
+
+.header-rightmost-content p {
+    margin: 0 10px 0 0;
+    font-size: 1rem;
+}
+
+.header-rightmost-content button {
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    background-color: #7d2ae8;
+    color: #fff;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.header-rightmost-content button:hover {
+    background-color: #5d1abf;
+}
+
+.header-rightmost-content button:active {
+    transform: scale(0.96);
 }

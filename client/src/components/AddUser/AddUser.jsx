@@ -1,54 +1,40 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { json } from 'react-router-dom';
 import './AddUser.css'
+import { axiosWithToken } from '../../AxiosWithToken';
+
 const AddUser = () => {
 
-    let { register, handleSubmit } = useForm();
+  let { register, handleSubmit } = useForm();
+
+  const [err, setErr] = useState("");
+  const [state, setState] = useState(false);
   
+  async function onRegisterFormSubmit(userCrdentialsObject) {
+    userCrdentialsObject.userId = Date.now();
+    userCrdentialsObject.status = true;
+      try {
+        const typeOfRole= userCrdentialsObject.userType === "staff" ? "staff" : "admin";
 
-  function onRegisterFormSubmit(userCrdentialsObject) {
-    if (!userCrdentialsObject.password) {
-      alert("Password cannot be empty!");
-    } else if (userCrdentialsObject.password.length < 8) {
-      alert("Password should be at least 8 characters long!");
-    } else {
-    fetch(`http://localhost:4000/users/${userCrdentialsObject.username}`,
-      {
-        method:"GET"
+
+        const res = await axiosWithToken.post(`http://localhost:4000/admin-api/${typeOfRole}`, userCrdentialsObject);
+        console.log(res);
+        if (res.data.message === "User created") {
+          setState(true);
+          setErr("");
+        } else {
+          setErr(res.data.message);
+        }
+      } catch (error) {
+        console.error("Error during signup:", error);
+        setErr("Failed to register. Please try again.");
       }
-    )
-    .then((res)=>res.json())
-    .then((userObjArray)=>{
-      if(userObjArray.payload === undefined)
-        {
-          fetch('http://localhost:4000/users',{
-            method: "POST",
-            headers: {
-                'Content-Type': "application/json"
-            },
-            body: JSON.stringify(userCrdentialsObject)
-        })
-        .then((res) => {
-            if(res.status === 201) {
-                alert('New User Registered');
-            } else {
-                alert("User Registration Failed !");
-            }
-        })
-        
-
-        }
-        else{
-          alert("User Exists!!")
-        }
-    })}
-     
-  }
+    }
 
     return (
         <div className='container'>
-      <h1 className="heading ">User Register form</h1>
+        <h1 className="heading ">User Registeration  form</h1>
       <form
         action=""
         className="form"
@@ -73,28 +59,27 @@ const AddUser = () => {
 
         {/* password */}
         
-          <input
-            type="password" placeholder='Password'
-            {...register("password")}
+          <input type="password" placeholder='Password' {...register("password")}
             id="password"
-            className="input"          />
+            className="input" />
         
       <div className='radio-container'>
        <div className='admin-radio'>
        <p>Admin</p>
         <input
           type="radio"
-          value="admin"
-          {...register("role")}
-        />
+                value="admin"
+              name="userType"
+                {...register("userType")}        />
        </div>
 
        <div className='staff-radio'>
        <p>Staff</p>
          <input
           type="radio"
-          value="staff"
-          {...register("role")}
+                value="staff"
+                name="userType"
+          {...register("userType")}
         />
        </div>
        </div>

@@ -1,40 +1,34 @@
 import React, { useState } from 'react';
 import './AdminHome.css';
-import { NavLink, Outlet } from 'react-router-dom';
-
+import { Link, Outlet } from 'react-router-dom';
+import Header from '../Header/Header';
 function AdminHome() {
-    const [showUserOptions, setShowUserOptions] = useState(false);
-    const history = useHistory();
-
-    const toggleUserOptions = () => {
-        setShowUserOptions(!showUserOptions);
-    };
-
-    const handleDeleteCircular = () => {
-        // Perform any necessary delete action
-        // After deleting, redirect to the same page
-
-    };
-
-    return (
-        <div className="admin-home">
-            <div className="admin-options">
-                <ul>
-                    <li onClick={toggleUserOptions}>Manage User</li >
-                    {showUserOptions && (
-                        <>
-                            <NavLink to="add-user">Register New User</NavLink >
-                            <NavLink to="delete-user">Delete Existing User</NavLink >
-                        </>
-                    )}
-                    <NavLink to="upload-circular">Upload Circular</NavLink >
-                    <li onClick={handleDeleteCircular}>Delete Circular</li >
-                </ul>
+  return (
+    <><Header />
+      <div className="main">
+      <div className="App-body">
+          <div className="sidebar">
+             <div className="sidebar-item">
+              <Link to="delete-circular">ALL circulars</Link>
+             </div>
+          <div className="sidebar-item">
+            <Link to="add-user">Add User</Link>
+          </div>
+          <div className="sidebar-item">
+            <Link to="delete-user">delete User</Link>
+          </div>
+          <div className="sidebar-item">
+            <Link to="upload-circular">upload circular</Link>
             </div>
-            <div className="options-contents">
-                <Outlet />
-            </div>
+            
+          </div>
+        <div className="main-content">
+          <Outlet/>
         </div>
+      </div>
+    </div>
+      </>
+   
     );
 }
 

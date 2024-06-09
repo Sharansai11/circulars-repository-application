@@ -14,7 +14,9 @@ function Login2() {
     handleSubmit,
   } = useForm();
 
+
   const { currentUser, loginUserStatus } =useSelector((state) => state.StaffAdminLoginReducer);
+
 
 
   function onLoginFormSubmit(userCred) {
@@ -24,7 +26,6 @@ function Login2() {
   }
 
   useEffect(() => {
- 
     if (loginUserStatus) {
       if (currentUser?.userType === "staff") {
         navigate("/staff-profile");
@@ -32,12 +33,11 @@ function Login2() {
         navigate("/admin-profile");
       }
     }
-  }, [loginUserStatus, currentUser, navigate]);
+  }, [loginUserStatus, currentUser]);
 
   return (
     <div>
       <Header />
-
       <div className="outer-container">
         <div className="containerl">
           <div className="heading">Login</div>
@@ -79,7 +79,7 @@ function Login2() {
               {...register("password")}
               placeholder="Password"
             />
-            <input className="login-button" type="submit" value="Sign In" />
+            <button className="login-button" type="submit"  >Sign in </button>
           </form>
         </div>
       </div>
