@@ -1,10 +1,12 @@
 import React from 'react'
-
+import { Outlet } from 'react-router-dom'
 function StaffHome() {
   return (
-     <><Header />
-      <div>StaffHome</div>
-      </>
+   
+    <div className="staffhome">
+      <Outlet/>
+     </div>
+    
   )
 }
 

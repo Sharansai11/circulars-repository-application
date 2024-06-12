@@ -1,21 +1,22 @@
-/* AdminHome.css */
+
 .main {
     display: flex;
-    height: 100vh;
+    height:834.22px;
+    width: 100vw;
     background-color: #f4f4f4;
+    margin-left: 0;
 }
 
-.App-body {
-    display: flex;
-    width: 100%;
-}
+
 
 .sidebar {
     width: 20%;
-    background-color: #2c3e50;
+    background-color:rgb(130 0 26);
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 30px;
+    font-size: 10px;
+    font-weight: 600;
 }
 .sidebar-item a{
     text-decoration: none;
@@ -26,17 +27,21 @@
 }
 
 .sidebar-item a {
-    color: #ecf0f1;
+    color: #ffffff;
     text-decoration: none;
     font-size: 18px;
 }
 
 .sidebar-item a:hover {
-    text-decoration: underline;
+    text-decoration: none;
+   font-size: 25px;
 }
 
 .main-content {
-    width: 80%;
+    max-width:80vw;
+      flex-grow:1;
+     
+      
     padding: 20px;
     background-color: #ffffff;
     border-left: 1px solid #ccc;

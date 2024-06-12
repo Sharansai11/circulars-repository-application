@@ -9,20 +9,23 @@ const VerifyToken = require("../Middlewares/VerifyToken");
 
 let admincollection;
 let staffcollection;
+let circularCollection;
 
 // let staffcollection;
 //get usercollection app
 adminApp.use((req, res, next) => {
     admincollection = req.app.get('admincollection');
     staffcollection = req.app.get("staffcollection");
+    circularCollection = req.app.get('circularCollection');
     // staffcollection = req.app.get('staffcollection')
-    next()
+    next();
 })
 
 //author login
 adminApp.post('/login', expressAsyncHandler(async (req, res) => {
     //get cred obj from client
     const userCred = req.body;
+  
     //check for username
     const dbuser = await admincollection.findOne({ username: userCred.username })
     if (dbuser === null) {
@@ -97,24 +100,42 @@ adminApp.post(
 
 
 adminApp.put('/delete-user', VerifyToken, expressAsyncHandler(async (req, res) => {
- 
-   
+
+
     //get user
     const userToDelete = req.body;
+    let dbuser = await staffcollection.findOne({ username: userToDelete.username})
+    console.log(userToDelete)
+    if (dbuser) { 
 
-    if (userToDelete.status === true) {
-        let modifiedArt = await staffcollection.UpdateOne({ userId: userToDelete.userId }, { $set: { ...userToDelete, status: false } })
-        res.send({ message: "user deleted" })
+        let modifiedArt = await staffcollection.updateOne({ username: dbuser.username  }, { $set: { status: false } })
+        res.send({ message: "User deleted" })
     }
+    else {
 
-}))
+        res.send({ message: "user does not exists" })
+    }
+}
+
+))
+// Route to handle POST request for adding a circular
+adminApp.post('/upload-circular', expressAsyncHandler(async (req, res) => {
+        console.log(req.body);
+        const newCir = req.body;
+       
+        //post to artciles collection
+        await circularCollection.insertOne(newCir);
+        //send res
+        res.send({ message: "New article created" })
+        
+        
+          
+    }
+    )
+);
 
 
 
-
-
-    
-  
 //export userApp
 module.exports = adminApp;
 

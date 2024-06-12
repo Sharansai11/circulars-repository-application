@@ -1,0 +1,51 @@
+.circularList-outer {
+  display: flex;
+  flex-direction: column;
+  padding: 20px;
+}
+
+.CircularsList {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+  margin-top: 30px;
+  gap: 30px;
+  row-gap: 50px;
+  padding: 40px;
+  background-color: #f4f4f4;
+}
+
+.CircularsList h2 {
+  font-size: 32px;
+  margin-left: 20vw;
+}
+
+.clist {
+  margin-bottom: 20px;
+}
+
+.search-form {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  margin-bottom: 20px;
+}
+
+.search-form input,
+.search-form button {
+  padding: 10px;
+  border: 1px solid #b4c2c4;
+  border-radius: 5px;
+  font-size: 1rem;
+}
+
+.search-form button {
+  background-color: #007BFF;
+  color: white;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.search-form button:hover {
+  background-color: #0056b3;
+}

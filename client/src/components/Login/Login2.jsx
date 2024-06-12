@@ -4,25 +4,18 @@ import { StaffAdminLoginThunk } from "../redux/slices/StaffAdminSlice";
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login2.css'; // Import the CSS file
-import Header from '../Header/Header';
 
 function Login2() {
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const {
-    register,
-    handleSubmit,
-  } = useForm();
+  const { register, handleSubmit } = useForm();
 
-
-  const { currentUser, loginUserStatus } =useSelector((state) => state.StaffAdminLoginReducer);
-
-
+  const { currentUser, loginUserStatus } = useSelector((state) => state.StaffAdminLoginReducer);
 
   function onLoginFormSubmit(userCred) {
-    console.log("from login",userCred);
+    console.log("from login", userCred);
     dispatch(StaffAdminLoginThunk(userCred));
-    console.log("from login status",loginUserStatus);
+    console.log("from login status", loginUserStatus);
   }
 
   useEffect(() => {
@@ -37,14 +30,13 @@ function Login2() {
 
   return (
     <div>
-      <Header />
-      <div className="outer-container">
-        <div className="containerl">
-          <div className="heading">Login</div>
-          <form className="form" onSubmit={handleSubmit(onLoginFormSubmit)}>
-            <div className='radio-container'>
-              <div className='admin-radio'>
-                <p className='radio-label'>Admin</p>
+      <div className="login-outer-container">
+        <div className="login-container">
+          <div className="login-heading">Login</div>
+          <form className="login-form" onSubmit={handleSubmit(onLoginFormSubmit)}>
+            <div className="login-radio-container">
+              <div className="login-radio">
+                <p className="login-radio-label">Admin</p>
                 <input
                   type="radio"
                   value="admin"
@@ -52,8 +44,8 @@ function Login2() {
                   name="userType" // Add name attribute
                 />
               </div>
-              <div className='staff-radio'>
-                <p className='radio-label'>Staff</p>
+              <div className="login-radio">
+                <p className="login-radio-label">Staff</p>
                 <input
                   type="radio"
                   value="staff"
@@ -64,7 +56,7 @@ function Login2() {
             </div>
             <input
               required
-              className="input"
+              className="login-input"
               type="text"
               name="username"
               id="username"
@@ -73,13 +65,13 @@ function Login2() {
             />
             <input
               required
-              className="input"
+              className="login-input"
               type="password"
               id="password"
               {...register("password")}
               placeholder="Password"
             />
-            <button className="login-button" type="submit"  >Sign in </button>
+            <button className="loginn-button" type="submit">Sign in</button>
           </form>
         </div>
       </div>

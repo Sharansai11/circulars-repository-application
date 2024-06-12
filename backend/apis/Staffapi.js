@@ -1,57 +1,76 @@
 //create user api app
-
 const exp = require("express");
 const staffApp = exp.Router();
 const bcryptjs = require("bcryptjs");
 const expressAsyncHandler = require("express-async-handler");
 const jwt = require("jsonwebtoken");
 const VerifyToken = require("../Middlewares/VerifyToken");
+
 require("dotenv").config();
 
 let staffcollection;
+let circularCollection;
 
 // let articlescollection;
 //get usercollection app
 staffApp.use((req, res, next) => {
     staffcollection = req.app.get("staffcollection");
-    // articlescollection = req.app.get('articlescollection')
+     circularCollection = req.app.get('circularCollection');
     next()
 })
-//user login
-staffApp.post(
-    "/login",
-    expressAsyncHandler(async (req, res) => {
-        //get cred obj from client
-        const userCred = req.body;
-        //check for username
-        const dbuser = await staffcollection.findOne({
-            username: userCred.username,
-        });
-        if (dbuser === null) {
-            res.send({ message: "Invalid username" });
+staffApp.post('/login', expressAsyncHandler(async (req, res) => {
+    //get cred obj from client
+    const userCred = req.body;
+    console.log(userCred)
+    //check for username
+    const dbuser = await staffcollection.findOne({ username: userCred.username })
+    if (dbuser === null) {
+        res.send({ message: "Invalid username" })
+    } else {
+        //check for password
+        const status = await bcryptjs.compare(userCred.password, dbuser.password)
+        if (status === false) {
+            res.send({ message: "Invalid password" })
         } else {
-            //check for password
-            const status = await bcryptjs.compare(userCred.password, dbuser.password);
-            if (status === false) {
-                res.send({ message: "Invalid password" });
-            } else {
-                //create jwt token and encode it
-                const signedToken = jwt.sign(
-                    { username: dbuser.username },
-                    process.env.SECRET_KEY,
-                    { expiresIn: '1d' }
-                );
-                //send res
-                res.send({
-                    message: "login success",
-                    token: signedToken,
-                    user: dbuser,
-                });
-            }
+            //create jwt token and encode it
+            const signedToken = jwt.sign({ username: dbuser.username }, process.env.SECRET_KEY, { expiresIn: '1d' })
+            //send res
+            res.send({ message: "login success", token: signedToken, user: dbuser })
         }
-    })
-);
+    }
+}))
 
+
+// Assuming circularCollection is properly initialized and imported
+
+staffApp.get('/circulars', VerifyToken, expressAsyncHandler(async (req, res) => {
+    try {
+        console.log("circular staff api")
+        const circularlist = await circularCollection.find().toArray();
+        console.log("Circulars fetched successfully:", circularlist);
+        res.send({ message: "List of circulars", payload: circularlist });
+    } catch (error) {
+        console.error("Error fetching circulars:", error);
+        res.send({ message: "Error fetching circulars", error: error.message });
+    }
+}));
+
+
+// staffApp.get('/circulars', VerifyToken, expressAsyncHandler(async (req, res) => {
+    
+//     // 
+//     try {
+//         const circularlist = await circularCollection.find().toArray();
+//         // Proceed with further processing if successful
+//     } catch (error) {
+//         console.error("Error fetching circulars:", error);
+//         // Handle the error, e.g., log it, return an error response, etc.
+//     }
+
+//     // console.log(circularlist)
+//     res.send({ message: "List ofcirculars", payload: circularlist })
+
+// }))
 // //get articles of all authors
 // staffApp.get(
 //     "/articles", verifyToken,

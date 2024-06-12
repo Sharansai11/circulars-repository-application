@@ -1,29 +1,33 @@
-import React, { useState1 } from 'react';
+
+import React, { useState} from 'react';
 import { useForm } from 'react-hook-form';
 import './DeleteUser.css'
-import { axiosWithToken } from '../../AxiosWithToken';
+import axios from 'axios';
 
 const DeleteUser = () => {
+  const token = localStorage.getItem('token')
+ const axiosWithToken = axios.create({
+    headers: { Authorization: `Bearer ${token}` }
+  })
 
-  const [err1, setErr1] = useState("");
-  const [state1, setState1] = useState(false);
+  const [err, setErr] = useState("");
+  const [state, setState] = useState(false);
 
   const { register, handleSubmit } = useForm()
 
   async function deleteUser(userCrdentialsObject) {
     try {
-
-      const res = await axiosWithToken.post(`http://localhost:4000/admin-api/delete-user`, userCrdentialsObject);
-      console.log("deltete user ", res);
+      const res = await axiosWithToken.put(`http://localhost:4000/admin-api/delete-user`, userCrdentialsObject);
+      console.log("deleted user", res);
       if (res.data.message === "User deleted") {
-        setState1(true);
-        setErr1("");
+        setState(true);
+        setErr("");
       } else {
-        setErr1(res.data.message);
+        setErr(res.data.message);
       }
-    } catch (err1or) {
-      console.err1or("Err1or during deletion:", err1or);
-      setErr1("Failed to delete. Please try again.");
+    } catch (err) {
+      console.log("Err1or during deletion:", err);
+      setErr("Failed to delete. Please try again.");
     }
 
   }
@@ -32,10 +36,10 @@ const DeleteUser = () => {
     <>
       <div className='container'>
         <h1 className="heading">Delete User</h1>
-
+        {state ? <p>user deleted </p> : <p>{ err}</p>}
         <form action="" onSubmit={handleSubmit(deleteUser)} className="form" >
 
-          <input type="text" placeholder='Username' {...register("username")} className="input" />
+          <input type="text" id="username" placeholder='Username' {...register("username")} className="input" />
 
           <button type='submit'>delete</button>
         </form>

@@ -1,29 +1,60 @@
 import React from 'react';
-import './Header.css'
-import vnr_log from '../assets/VNRVJIETLogo - Copy.png'
+import './Header.css';
+import vnr_log from '../assets/VNRVJIETLogo - Copy.png';
 import { useDispatch, useSelector } from 'react-redux';
 import { resetState } from '../redux/slices/StaffAdminSlice';
+import { useNavigate, NavLink } from 'react-router-dom';
 
 const Header = () => {
-    let { loginUserStatus, currentUser } = useSelector(
+    const { loginUserStatus, currentUser } = useSelector(
         (state) => state.StaffAdminLoginReducer
     );
+    const navigate = useNavigate();
 
-    let dispatch = useDispatch()
+    const dispatch = useDispatch();
+
     function logout() {
-        localStorage.removeItem("token");
+        localStorage.removeItem('token');
         dispatch(resetState());
     }
 
-    return (
-        <div className="header">
-            <div className="middle-content">
-                <img className='vnr-logo' src={vnr_log} alt="" />
-                <h2 className='vnr'>VNR VJIET - Circular Repository</h2></div>
-            <div className="header-rightmost-content">
-                {loginUserStatus ? <></> : <> {<p>{currentUser}</p>},{<button onClick={logout}>logout</button>}</>}
+    console.log("loginUserStatus:", loginUserStatus);
+    console.log("currentUser:", currentUser);
 
-            </div>
+    return (
+        <div className="header-container">
+            <ul className="header-list">
+                {loginUserStatus === false ? (
+                    <>
+                        <div className="header-content">
+                            <img className='header-logo' src={vnr_log} alt="VNR Logo" />
+                            <h2 className='header-title'>VNR VJIET - Circular Repository</h2>
+                        </div>
+                    </>
+                ) : (
+                    currentUser.username && (
+                        <>
+                            <li>
+                                <div className="header-content">
+                                    <img className='header-logo' src={vnr_log} alt="VNR Logo" />
+                                    <h2 className='header-title'>VNR VJIET - Circular Repository</h2>
+                                </div>
+                            </li>
+                            <li>
+                                <div className="header-user">
+                                    {currentUser.username}
+                                    <sup className="header-userType">({currentUser.userType})</sup>
+                                </div>
+                            </li>
+                            <li>
+                                <NavLink to="" onClick={logout}>
+                                    <button className="header-logoutButton">Log out</button>
+                                </NavLink>
+                            </li>
+                        </>
+                    )
+                )}
+            </ul>
         </div>
     );
 };

@@ -1,6 +1,9 @@
-import axios from "axios";
+import React from 'react'
 
-const token = localStorage.getItem('token')
-export const axiosWithToken = axios.create({
-    headers: { Authorization: `Bearer ${token}` }
-})
+function AxiosWithToken() {
+  return (
+    <div>AxiosWithToken</div>
+  )
+}
+
+export default AxiosWithToken
