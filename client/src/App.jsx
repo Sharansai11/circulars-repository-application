@@ -10,7 +10,7 @@ import DeleteUser from './components/DeleteUser/DeleteUser';
 import CircularUpload from './components/CircularUpload/CircularUpload';
 import PdfTableAdmin from './components/PdfTableAdmin/PdfTableAdmin';
 import ViewCircular from './components/viewCircular/ViewCircular';
-
+import CircularDownload from './components/circularDownload/Circulardownload';
 function App() {
   const browserRouter = createBrowserRouter([
     {
@@ -19,7 +19,7 @@ function App() {
       errorElement: <ErrorPage />,
       children: [
         {
-          index:true,
+          index: true,
           element: <Login2 />,
         },
         {
@@ -27,8 +27,8 @@ function App() {
           element: <AdminHome />,
           children: [
             {
-              path: '',
-              element: <PdfTableAdmin />,
+              index: true,
+              element: <  ViewCircular />,
             },
             {
               path: 'circular',
@@ -43,7 +43,7 @@ function App() {
               element: <DeleteUser />,
             },
             {
-              path: 'upload-circular', 
+              path: 'upload-circular',
               element: <CircularUpload />,
             }
           ],
@@ -54,12 +54,19 @@ function App() {
           children: [
             {
               index: true,
-              element: <  ViewCircular/>,
+              element: <  ViewCircular />,
             },
+
           ],
         },
+        {
+          path: '/circular-download',
+          element: <CircularDownload />,
+        }
+
       ]
-    }
+    },
+
   ]);
 
   return (

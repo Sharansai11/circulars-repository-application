@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
 import { useSelector, useDispatch } from "react-redux";
-import { StaffAdminLoginThunk } from "../redux/slices/StaffAdminSlice";
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './Login2.css'; // Import the CSS file
+import { StaffAdminLoginThunk } from "../redux/slices/StaffAdminSlice";
 
 function Login2() {
   const dispatch = useDispatch();

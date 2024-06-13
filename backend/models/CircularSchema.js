@@ -23,5 +23,4 @@ const circularSchema = new mongoose.Schema({
     }
 });
 
-const circularCollection = mongoose.model("circularCollection", circularSchema);
-module.exports = circularCollection;
+module.exports = mongoose.model("circularObject",circularSchema);

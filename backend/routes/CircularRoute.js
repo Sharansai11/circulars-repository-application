@@ -1,7 +1,9 @@
 const express = require('express');
-const router = new express.Router();
+const router =  express.Router();
+const mongoose = require('mongoose');
 const multer = require('multer');
 const circularCollection = require('../models/CircularSchema');
+const cloudinary = require('../utils/cloudinary')
 
 // Image/PDF storage path
 const storage = multer.diskStorage({

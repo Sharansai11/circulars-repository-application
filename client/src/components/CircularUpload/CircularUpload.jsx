@@ -7,31 +7,69 @@ export default function CircularUpload() {
   const {
     register,
     handleSubmit,
-    formState: { errors }
+    formState: { errors },
+    reset
   } = useForm();
-  const token = localStorage.getItem('token')
+
+  const token = localStorage.getItem('token');
   const axiosWithToken = axios.create({
     headers: { Authorization: `Bearer ${token}` }
-  })
+  });
+
   const [err, setErr] = useState("");
   const [state, setState] = useState(false);
+  const [loading, setLoading] = useState(false);
 
-  async function uploadCircular(circulardata) {
-    console.log(circulardata)
+  async function uploadFileToCloudinary(file) {
+    const formData = new FormData();
+    formData.append('file', file);
+    formData.append('upload_preset', 'image_preset'); // Replace with your upload preset
+
+    const cloudinaryUrl = `https://api.cloudinary.com/v1_1/dobmnzrec/auto/upload`; // Replace with your cloud name
+
     try {
-      let res = await axios.post(`http://localhost:4000/admin-api/upload-circular`, circulardata);
+      const response = await axios.post(cloudinaryUrl, formData);
+      return response.data.secure_url;
+    } catch (error) {
+      console.error("Error uploading to Cloudinary", error);
+      throw new Error("Failed to upload image to Cloudinary.");
+    }
+  }
 
-      if (res.data.message === "Circular added successfully") {
+  async function uploadCircular(data) {
+    setLoading(true);
+    try {
+      const fileurl = await uploadFileToCloudinary(data.file[0]);
+
+      const circularData = {
+        title: data.title,
+        description: data.description,
+        date: data.date,
+        category: data.category,
+        fileurl :fileurl
+      };
+      console.log(circularData);
+
+      const res = await axiosWithToken.post(`http://localhost:4000/admin-api/upload-circular`, circularData, {
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (res.status === 201) {
         setState(true);
         setErr("");
+        reset();
       } else {
         setErr(res.data.message);
       }
     } catch (error) {
       console.error("Error during upload", error);
       setErr("Failed to upload. Please try again.");
+    } finally {
+      setLoading(false);
     }
-  };
+  }
 
   return (
     <div className="CircularUpload">
@@ -39,19 +77,16 @@ export default function CircularUpload() {
       <form onSubmit={handleSubmit(uploadCircular)}>
         {state && <h3>Upload successful</h3>}
         {err && <p className="error-message">{err}</p>}
+        {loading && <p>Loading...</p>}
 
         <div className="form-control">
           <label>Title</label>
           <input
             type="text"
             name="title"
-            {...register("title", {
-              required: true,
-            })}
+            {...register("title", { required: true })}
           />
-          {errors.title && errors.title.type === "required" && (
-            <p className="errorMsg">Title is required.</p>
-          )}
+          {errors.title && <p className="errorMsg">Title is required.</p>}
         </div>
 
         <div className="form-control">
@@ -59,10 +94,7 @@ export default function CircularUpload() {
           <input
             type="text"
             name="description"
-            {...register("description", {
-              required: true,
-              minLength: 6
-            })}
+            {...register("description", { required: true, minLength: 6 })}
           />
           {errors.description && errors.description.type === "required" && (
             <p className="errorMsg">Description is required.</p>
@@ -79,13 +111,9 @@ export default function CircularUpload() {
           <input
             type="date"
             name="date"
-            {...register("date", {
-              required: true,
-            })}
+            {...register("date", { required: true })}
           />
-          {errors.date && errors.date.type === "required" && (
-            <p className="errorMsg">Date is required.</p>
-          )}
+          {errors.date && <p className="errorMsg">Date is required.</p>}
         </div>
 
         <div className="form-control">
@@ -93,13 +121,19 @@ export default function CircularUpload() {
           <input
             type="text"
             name="category"
-            {...register("category", {
-              required: true,
-            })}
+            {...register("category", { required: true })}
           />
-          {errors.category && errors.category.type === "required" && (
-            <p className="errorMsg">Category is required.</p>
-          )}
+          {errors.category && <p className="errorMsg">Category is required.</p>}
+        </div>
+
+        <div className="form-control">
+          <label>File</label>
+          <input
+            type="file"
+            name="file"
+            {...register("file", { required: true })}
+          />
+          {errors.file && <p className="errorMsg">File is required.</p>}
         </div>
 
         <div className="form-control">

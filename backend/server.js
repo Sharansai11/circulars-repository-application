@@ -37,6 +37,7 @@ const adminApp = require('./apis/Adminapi');
 // API routes
 app.use('/staff-api', staffApp);
 app.use('/admin-api', adminApp);
+// app.use('/circular-api', require('./routes/CircularRoute'));
 
 // The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
 // app.get('*', (req, res) => {

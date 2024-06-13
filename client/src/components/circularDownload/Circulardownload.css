@@ -1,0 +1,49 @@
+/* CircularDownload.css */
+
+.circular-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f0f0f0; /* Light background color */
+}
+
+.circular-content {
+  width: 600px;
+  padding: 20px;
+  background-color: #fff; /* White background */
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Shadow for depth */
+}
+
+.circular-content h2 {
+  font-size: 24px;
+  margin-bottom: 10px;
+}
+
+.circular-content p {
+  font-size: 16px;
+  line-height: 1.6;
+  margin-bottom: 15px;
+}
+
+.circular-content strong {
+  font-weight: bold;
+}
+
+.download-button {
+  display: inline-block;
+  background-color: #007bff; /* Primary button color */
+  color: #fff; /* Text color */
+  font-size: 16px;
+  font-weight: bold;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #0056b3; /* Darker shade on hover */
+}

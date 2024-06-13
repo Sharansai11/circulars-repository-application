@@ -25,7 +25,7 @@ adminApp.use((req, res, next) => {
 adminApp.post('/login', expressAsyncHandler(async (req, res) => {
     //get cred obj from client
     const userCred = req.body;
-  
+
     //check for username
     const dbuser = await admincollection.findOne({ username: userCred.username })
     if (dbuser === null) {
@@ -104,11 +104,11 @@ adminApp.put('/delete-user', VerifyToken, expressAsyncHandler(async (req, res) =
 
     //get user
     const userToDelete = req.body;
-    let dbuser = await staffcollection.findOne({ username: userToDelete.username})
+    let dbuser = await staffcollection.findOne({ username: userToDelete.username })
     console.log(userToDelete)
-    if (dbuser) { 
+    if (dbuser) {
 
-        let modifiedArt = await staffcollection.updateOne({ username: dbuser.username  }, { $set: { status: false } })
+        let modifiedArt = await staffcollection.updateOne({ username: dbuser.username }, { $set: { status: false } })
         res.send({ message: "User deleted" })
     }
     else {
@@ -120,21 +120,59 @@ adminApp.put('/delete-user', VerifyToken, expressAsyncHandler(async (req, res) =
 ))
 // Route to handle POST request for adding a circular
 adminApp.post('/upload-circular', expressAsyncHandler(async (req, res) => {
-        console.log(req.body);
-        const newCir = req.body;
-       
-        //post to artciles collection
-        await circularCollection.insertOne(newCir);
-        //send res
-        res.send({ message: "New article created" })
-        
-        
-          
-    }
-    )
+    console.log(req.body);
+    const newCir = req.body;
+
+    //post to artciles collection
+    await circularCollection.insertOne(newCir);
+    //send res
+    res.send({ message: "New article created" })
+
+
+
+}
+)
 );
 
+// Soft delete circular
+adminApp.put('/delete-circular', VerifyToken, expressAsyncHandler(async (req, res) => {
+    const { fileurl } = req.body;
+    console.log(fileurl);
+    try {
+        const modifiedCircular = await circularCollection.updateOne(
+            { fileurl: fileurl },
+            { $set: { status: false } }
+        );
+        if (modifiedCircular.modifiedCount === 1) {
+            res.send({ message: "Circular deleted successfully" });
+        } else {
+            res.status(404).send({ message: "Circular not found" });
+        }
+    } catch (error) {
+        console.error("Error deleting circular:", error);
+        res.status(500).send({ message: "Failed to delete circular" });
+    }
+}));
 
+// Restore circular
+adminApp.put('/restore-circular', VerifyToken, expressAsyncHandler(async (req, res) => {
+    const { fileurl } = req.body;
+    console.log(fileurl);
+    try {
+        const modifiedCircular = await circularCollection.updateOne(
+            { fileurl: fileurl },
+            { $set: { status: true } }
+        );
+        if (modifiedCircular.modifiedCount === 1) {
+            res.send({ message: "Circular restored successfully" });
+        } else {
+            res.status(404).send({ message: "Circular not found" });
+        }
+    } catch (error) {
+        console.error("Error restoring circular:", error);
+        res.status(500).send({ message: "Failed to restore circular" });
+    }
+}));
 
 //export userApp
 module.exports = adminApp;

@@ -2,10 +2,14 @@ import React, { useEffect, useState, useRef } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './ViewCircular.css';
 import axios from 'axios';
+
 import CircularCard from '../circularcard/CircularCard';
-import { Row, Col } from 'react-bootstrap'; // Ensure you have react-bootstrap installed
+import { Row, Col } from 'react-bootstrap';
+import { useSelector } from 'react-redux';
 
 function ViewCircular() {
+  const { currentUser } = useSelector((state) => state.StaffAdminLoginReducer);
+
   const [circularsList, setCircularsList] = useState([]);
   const [filteredCirculars, setFilteredCirculars] = useState([]);
   const [query, setQuery] = useState('');
@@ -32,7 +36,6 @@ function ViewCircular() {
         setFilteredCirculars(res.data.payload);
       } catch (error) {
         console.error("Error fetching circulars:", error);
-        // Handle the error, e.g., show a message to the user or retry the request
       }
     };
 
@@ -46,11 +49,13 @@ function ViewCircular() {
   const filterCirculars = () => {
     const lowerCaseQuery = query.toLowerCase();
     const lowerCaseCategory = category.toLowerCase();
-    const filtered = circularsList.filter(circular =>
-      (lowerCaseQuery ? circular.title.toLowerCase().includes(lowerCaseQuery) : true) &&
-      (lowerCaseCategory ? circular.category.toLowerCase().includes(lowerCaseCategory) : true) &&
-      (date ? circular.date === date : true)
-    );
+    const filtered = circularsList.filter(circular => {
+      const matchesQuery = lowerCaseQuery ? circular.title.toLowerCase().includes(lowerCaseQuery) : true;
+      const matchesCategory = lowerCaseCategory ? circular.category.toLowerCase().includes(lowerCaseCategory) : true;
+      const matchesDate = date ? circular.date === date : true;
+      const matchesStatus = currentUser.userType === 'admin' || circular.status === true;
+      return matchesQuery && matchesCategory && matchesDate && matchesStatus;
+    });
     setFilteredCirculars(filtered);
   };
 
@@ -59,6 +64,10 @@ function ViewCircular() {
     setQuery(inputRef.current.value);
     setCategory(categoryRef.current.value);
     setDate(dateRef.current.value);
+  };
+
+  const handleCardClick = (circular) => {
+    navigate('/circular-download', { state: { circular } });
   };
 
   return (
@@ -84,7 +93,10 @@ function ViewCircular() {
           <div className='clist' key={index}>
             <Row className="justify-content-md-center">
               <Col>
-                <CircularCard data={circular} />
+                <CircularCard
+                  onClick={() => handleCardClick(circular)}
+                  data={circular}
+                />
               </Col>
             </Row>
           </div>
