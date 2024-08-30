@@ -29,6 +29,8 @@ const Header = () => {
                         <div className="header-content">
                             <img className='header-logo' src={vnr_log} alt="VNR Logo" />
                             <h2 className='header-title'>VNR VJIET - Circular Repository</h2>
+                            <p>
+                                You can log in using demo credentials for both admin and staff accounts, with "demo" as the username and password.</p>
                         </div>
                     </>
                 ) : (

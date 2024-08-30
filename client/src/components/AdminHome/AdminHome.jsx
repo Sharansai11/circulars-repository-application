@@ -12,7 +12,7 @@ function AdminHome() {
           </div>
           <div className="sidebar-item">
            
-              <Link to="delete-circular">ALL circulars</Link>
+          <Link to="circular">ALL circulars</Link>
              </div>
           
           <div className="sidebar-item">

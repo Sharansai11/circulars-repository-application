@@ -9,7 +9,7 @@ export const StaffAdminLoginThunk = createAsyncThunk(
     try {
       if (userCredObj.userType === "staff") {
         const res = await axios.post(
-          "https://circularhub.onrender.com/staff-api/login",
+          "http://localhost:4000/staff-api/login",
           userCredObj
         );
         if (res.data.message === "login success") {
@@ -24,7 +24,7 @@ export const StaffAdminLoginThunk = createAsyncThunk(
       }
       if (userCredObj.userType === "admin") {
         const res = await axios.post(
-          "https://circularhub.onrender.com/admin-api/login",
+          "http://localhost:4000/admin-api/login",
           userCredObj
         );
         if (res.data.message === "login success") {

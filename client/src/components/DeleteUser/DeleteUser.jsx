@@ -17,7 +17,7 @@ const DeleteUser = () => {
 
   async function deleteUser(userCrdentialsObject) {
     try {
-      const res = await axiosWithToken.put(`https://circularhub.onrender.com/admin-api/delete-user`, userCrdentialsObject);
+      const res = await axiosWithToken.put(`http://localhost:4000/admin-api/delete-user`, userCrdentialsObject);
       console.log("deleted user", res);
       if (res.data.message === "User deleted") {
         setState(true);

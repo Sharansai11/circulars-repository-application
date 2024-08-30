@@ -30,7 +30,7 @@ function ViewCircular() {
     const getCircularsOfCurrent = async () => {
       try {
         console.log("Fetching circulars...");
-        const res = await axiosWithToken.get("https://circularhub.onrender.com/staff-api/circulars");
+        const res = await axiosWithToken.get("http://localhost:4000/staff-api/circulars");
         console.log("Response:", res);
         setCircularsList(res.data.payload);
         setFilteredCirculars(res.data.payload);
