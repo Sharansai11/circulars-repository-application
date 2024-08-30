@@ -19,7 +19,7 @@ const AddUser = () => {
 
     try {
       const typeOfRole = userCredentialsObject.userType === "staff" ? "staff" : "admin";
-      const res = await axiosWithToken.post(`http://localhost:4000/admin-api/${typeOfRole}`, userCredentialsObject);
+      const res = await axiosWithToken.post(`https://circularhub.onrender.com/admin-api/${typeOfRole}`, userCredentialsObject);
 
       if (res.data.message === "User created") {
         setState(true);

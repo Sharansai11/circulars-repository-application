@@ -40,7 +40,7 @@ const CircularDownload = () => {
 
     const deleteCircular = async (fileurl) => {
         try {
-            await axiosWithToken.put('http://localhost:4000/admin-api/delete-circular', {
+            await axiosWithToken.put('https://circularhub.onrender.com/admin-api/delete-circular', {
                 fileurl // Send fileurl as data
             });
 
@@ -53,7 +53,7 @@ const CircularDownload = () => {
 
     const restoreCircular = async (fileurl) => {
         try {
-            await axiosWithToken.put('http://localhost:4000/admin-api/restore-circular', {
+            await axiosWithToken.put('https://circularhub.onrender.com/admin-api/restore-circular', {
                 fileurl // Send fileurl as data
             });
 

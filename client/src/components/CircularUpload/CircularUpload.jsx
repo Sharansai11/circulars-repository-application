@@ -46,11 +46,11 @@ export default function CircularUpload() {
         description: data.description,
         date: data.date,
         category: data.category,
-        fileurl :fileurl
+        fileurl: fileurl
       };
       console.log(circularData);
 
-      const res = await axiosWithToken.post(`http://localhost:4000/admin-api/upload-circular`, circularData, {
+      const res = await axiosWithToken.post(`https://circularhub.onrender.com/admin-api/upload-circular`, circularData, {
         headers: {
           'Content-Type': 'application/json'
         }
